@@ -99,6 +99,118 @@ function initStarField() {
   ro.observe(document.body);
 }
 
+// ── Shooting Stars ────────────────────────────────────────────────────────────
+function initShootingStars() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'shooting-canvas';
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none';
+  document.body.insertBefore(canvas, document.body.firstChild);
+
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  // Each shooting star
+  class Star {
+    constructor() { this.reset(true); }
+
+    reset(initial = false) {
+      // Start from top-right area, fall toward bottom-left
+      this.x     = W * (0.3 + Math.random() * 0.8);
+      this.y     = initial ? Math.random() * H * 0.5 : -20;
+      this.len   = 120 + Math.random() * 180;   // tail length
+      this.speed = 1.8 + Math.random() * 2.8;   // fall speed
+      this.angle = (Math.PI / 4) + (Math.random() - 0.5) * 0.3; // ~45° diagonal
+      this.alpha = 0;
+      this.maxAlpha = 0.5 + Math.random() * 0.45;
+      this.width = 1 + Math.random() * 1.2;
+      // rose/gold/white color
+      const palette = [
+        [232, 164, 184],  // rose
+        [212, 169, 106],  // gold
+        [255, 255, 255],  // white
+        [245, 221, 232],  // blush
+      ];
+      this.color = palette[Math.floor(Math.random() * palette.length)];
+      this.state = 'fadein'; // fadein → travel → fadeout
+      this.life  = 0;
+      this.maxLife = 60 + Math.random() * 80;
+    }
+
+    update() {
+      this.x += Math.cos(this.angle) * this.speed;
+      this.y += Math.sin(this.angle) * this.speed;
+      this.life++;
+
+      if (this.state === 'fadein') {
+        this.alpha += 0.04;
+        if (this.alpha >= this.maxAlpha) { this.alpha = this.maxAlpha; this.state = 'travel'; }
+      } else if (this.state === 'travel') {
+        if (this.life > this.maxLife) this.state = 'fadeout';
+      } else {
+        this.alpha -= 0.03;
+        if (this.alpha <= 0) this.reset();
+      }
+    }
+
+    draw() {
+      const [r, g, b] = this.color;
+      const tailX = this.x - Math.cos(this.angle) * this.len;
+      const tailY = this.y - Math.sin(this.angle) * this.len;
+
+      const grad = ctx.createLinearGradient(tailX, tailY, this.x, this.y);
+      grad.addColorStop(0, `rgba(${r},${g},${b},0)`);
+      grad.addColorStop(0.7, `rgba(${r},${g},${b},${this.alpha * 0.4})`);
+      grad.addColorStop(1, `rgba(${r},${g},${b},${this.alpha})`);
+
+      ctx.beginPath();
+      ctx.moveTo(tailX, tailY);
+      ctx.lineTo(this.x, this.y);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = this.width;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Bright head glow
+      const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 4);
+      glow.addColorStop(0, `rgba(${r},${g},${b},${this.alpha})`);
+      glow.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+    }
+  }
+
+  // Create pool of stars — staggered timing
+  const stars = Array.from({ length: 6 }, () => new Star());
+
+  // Spawn new stars at random intervals
+  function spawnLoop() {
+    const dead = stars.findIndex(s => s.alpha <= 0 && s.state !== 'fadein');
+    if (dead !== -1) stars[dead].reset();
+    setTimeout(spawnLoop, 800 + Math.random() * 2400);
+  }
+  setTimeout(spawnLoop, 1200);
+
+  function draw() {
+    if (!tabVisible) { requestAnimationFrame(draw); return; }
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => { s.update(); if (s.alpha > 0) s.draw(); });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// Start shooting stars immediately
+initShootingStars();
+
 function startSite() {
   loaderEl.classList.add('out');
   initHero3D();
@@ -153,6 +265,15 @@ document.addEventListener('visibilitychange', () => {
 document.querySelectorAll('a,button,.svc-row,.work-card,.testi-card,.process-card,.tech-pill').forEach(el => {
   el.addEventListener('mouseenter', () => cur.classList.add('big'));
   el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+// ── Back to top ──────────────────────────────────────────────────────────────
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  backToTop.classList.toggle('visible', scrollY > 400);
+}, { passive: true });
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 // ── Nav ───────────────────────────────────────────────────────────────────────
