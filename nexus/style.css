@@ -217,11 +217,12 @@ h1 em,h2 em,h3 em{
 }
 
 /* ── About ── */
-#about{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
-.about-left{position:relative;border-right:1px solid var(--border);overflow:hidden}
+#about{padding:6rem 0}
+.about-grid{max-width:1200px;margin:0 auto;padding:0 4rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;min-height:80vh}
+.about-left{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--border);min-height:520px}
 .about-canvas-wrap{position:absolute;inset:0}
 #about-canvas{width:100%;height:100%}
-.about-right{padding:8rem 4rem;display:flex;flex-direction:column;justify-content:center}
+.about-right{display:flex;flex-direction:column;justify-content:center;padding:2rem 0}
 .about-right h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:500;line-height:1.2;letter-spacing:-.01em;margin-bottom:1.8rem}
 .body-text{color:var(--soft);line-height:1.95;font-size:.95rem;margin-bottom:1rem;font-weight:400;font-family:'Outfit',sans-serif}
 .about-stats{display:flex;gap:3rem;margin:2.5rem 0 3rem}
@@ -388,8 +389,9 @@ footer{padding:3.5rem 0;border-top:1px solid var(--border)}
   .nav-center,.nav-hire{display:none}
   #menu-btn{display:flex}
   #about{grid-template-columns:1fr}
-  .about-left{height:50vw;position:relative}
-  .about-right{padding:4rem 2rem}
+  .about-grid{grid-template-columns:1fr;padding:0 2rem;gap:3rem}
+  .about-left{height:50vw;min-height:300px}
+  .about-right{padding:0}
   .contact-inner{grid-template-columns:1fr;gap:4rem;padding:0 2rem}
   .testi-grid{grid-template-columns:1fr}
   .work-grid{grid-template-columns:1fr 1fr}
