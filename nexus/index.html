@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abhinav — Creative Developer & Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Outfit:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Space background -->
+  <canvas id="space-canvas"></canvas>
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+  <div class="nebula nebula-3"></div>
+  <div class="nebula nebula-4"></div>
+
+  <!-- Cursor -->
+  <div id="cursor"></div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-content">
+      <div class="loader-name">ABHINAV</div>
+      <div class="loader-line"><div id="loader-fill"></div></div>
+      <div id="loader-pct">0%</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <a href="#hero" class="logo">A.</a>
+    <div class="nav-center">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-hire">Hire Me</a>
+    <button id="menu-btn" aria-label="menu"><span></span><span></span></button>
+  </nav>
+
+  <!-- Mobile nav -->
+  <div id="mobile-nav">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-inner">
+      <p class="hero-eyebrow"><span class="dot-live"></span>Available for new projects</p>
+      <h1 class="hero-heading">
+        <span class="word">I craft</span>
+        <span class="word accent" id="scramble-word">beautiful</span>
+        <span class="word">digital worlds</span>
+      </h1>
+      <p class="hero-sub">Designer, developer & digital artist — I blend elegance with technology to create experiences that move people.</p>
+      <div class="hero-btns">
+        <a href="#work" class="btn-main magnetic">View My Work</a>
+        <a href="#contact" class="btn-outline magnetic">Let's Create Together</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-track"><div class="scroll-thumb"></div></div>
+      <span>Scroll</span>
+    </div>
+    <!-- floating labels -->
+    <div class="float-tag" style="top:20%;right:8%">Three.js</div>
+    <div class="float-tag" style="bottom:28%;right:12%">GSAP</div>
+    <div class="float-tag" style="top:35%;left:5%">WebGL</div>
+  </section>
+
+  <!-- ═══ TICKER ═══ -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>3D Design</span><span class="sep">—</span>
+      <span>Motion</span><span class="sep">—</span>
+      <span>Web Dev</span><span class="sep">—</span>
+      <span>UI/UX</span><span class="sep">—</span>
+      <span>Branding</span><span class="sep">—</span>
+      <span>AI Tools</span><span class="sep">—</span>
+      <span>3D Design</span><span class="sep">—</span>
+      <span>Motion</span><span class="sep">—</span>
+      <span>Web Dev</span><span class="sep">—</span>
+      <span>UI/UX</span><span class="sep">—</span>
+      <span>Branding</span><span class="sep">—</span>
+      <span>AI Tools</span><span class="sep">—</span>
+    </div>
+  </div>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="about-left">
+      <div class="about-canvas-wrap"><canvas id="about-canvas"></canvas></div>
+    </div>
+    <div class="about-right">
+      <p class="label">About Me</p>
+      <h2>I turn ideas into <em>immersive</em> digital realities</h2>
+      <p class="body-text">I'm Abhinav — a creative developer and designer who believes that beautiful things deserve to be built beautifully. Every project is a canvas, every line of code a brushstroke.</p>
+      <p class="body-text">From 3D experiences to full-stack platforms, I bring artistry and precision to everything I create.</p>
+      <div class="about-stats">
+        <div class="astat"><span class="astat-n" data-n="150">0</span><span>+</span><small>Projects</small></div>
+        <div class="astat"><span class="astat-n" data-n="98">0</span><span>%</span><small>Satisfaction</small></div>
+        <div class="astat"><span class="astat-n" data-n="6">0</span><span>+</span><small>Years Exp.</small></div>
+      </div>
+      <a href="#work" class="btn-main magnetic">View Projects</a>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICES ═══ -->
+  <section id="services">
+    <div class="container">
+      <div class="sec-head">
+        <p class="label">What I Do</p>
+        <h2>Services built for <em>impact</em></h2>
+      </div>
+      <div class="services-list">
+
+        <div class="svc-row">
+          <div class="svc-num">01</div>
+          <div class="svc-body">
+            <h3>3D Web Experiences</h3>
+            <p>Immersive Three.js / WebGL scenes — product viewers, interactive environments, animated landing pages that stop people mid-scroll.</p>
+          </div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="16" stroke="currentColor" stroke-width="1"/><ellipse cx="20" cy="20" rx="8" ry="16" stroke="currentColor" stroke-width="1"/><line x1="4" y1="20" x2="36" y2="20" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+        </div>
+
+        <div class="svc-row">
+          <div class="svc-num">02</div>
+          <div class="svc-body">
+            <h3>UI / UX Design</h3>
+            <p>Design systems and interfaces that feel effortless. Every interaction considered, every detail intentional.</p>
+          </div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="24" rx="3" stroke="currentColor" stroke-width="1"/><circle cx="20" cy="20" r="5" stroke="currentColor" stroke-width="1"/><line x1="4" y1="14" x2="36" y2="14" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+        </div>
+
+        <div class="svc-row">
+          <div class="svc-num">03</div>
+          <div class="svc-body">
+            <h3>Motion & Animation</h3>
+            <p>GSAP-powered micro-interactions, scroll-driven storytelling, and cinematic transitions that make your product feel alive.</p>
+          </div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M8 32 L20 8 L32 32" stroke="currentColor" stroke-width="1"/><line x1="12" y1="24" x2="28" y2="24" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+        </div>
+
+        <div class="svc-row">
+          <div class="svc-num">04</div>
+          <div class="svc-body">
+            <h3>Full-Stack Development</h3>
+            <p>End-to-end builds — React, Next.js, Node, databases. Fast, scalable, and built to last.</p>
+          </div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 40 40" fill="none"><polyline points="8,14 2,20 8,26" stroke="currentColor" stroke-width="1"/><polyline points="32,14 38,20 32,26" stroke="currentColor" stroke-width="1"/><line x1="24" y1="6" x2="16" y2="34" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+        </div>
+
+        <div class="svc-row">
+          <div class="svc-num">05</div>
+          <div class="svc-body">
+            <h3>Brand Identity</h3>
+            <p>Visual identities that communicate instantly — logos, type systems, color, and the full brand experience.</p>
+          </div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 40 40" fill="none"><polygon points="20,4 36,32 4,32" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+        </div>
+
+        <div class="svc-row">
+          <div class="svc-num">06</div>
+          <div class="svc-body">
+            <h3>AI Integration</h3>
+            <p>Intelligent features woven into your product — chatbots, generative UI, recommendation engines, and more.</p>
+          </div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="6" stroke="currentColor" stroke-width="1"/><circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WORK ═══ -->
+  <section id="work">
+    <div class="container">
+      <div class="sec-head">
+        <p class="label">Selected Work</p>
+        <h2>Projects that <em>define</em> the standard</h2>
+      </div>
+    </div>
+    <div class="work-grid">
+
+      <!-- Card 1 — Large: 3D Product Configurator -->
+      <article class="work-card wc-large">
+        <div class="wc-bg" style="background:linear-gradient(135deg,#060612,#1a1040,#0d0d2b)"></div>
+        <canvas class="wc-canvas" id="wc1"></canvas>
+        <!-- Floating UI mockup -->
+        <div class="wc-mockup wc-mockup-1">
+          <div class="mock-browser">
+            <div class="mock-bar"><span></span><span></span><span></span></div>
+            <div class="mock-screen">
+              <div class="mock-3d-obj"></div>
+              <div class="mock-controls">
+                <div class="mock-slider"></div>
+                <div class="mock-slider" style="width:60%"></div>
+                <div class="mock-slider" style="width:80%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-stat-pill">↑ 340% Conversion</div>
+        </div>
+        <div class="wc-info">
+          <span class="wc-tag">3D / WebGL</span>
+          <h3>Quantum Interface</h3>
+          <p>Real-time 3D product configurator with physics simulation</p>
+          <span class="wc-arrow">↗</span>
+        </div>
+      </article>
+
+      <!-- Card 2 — AI Platform -->
+      <article class="work-card">
+        <div class="wc-bg" style="background:linear-gradient(135deg,#080818,#0f1a30,#091428)"></div>
+        <div class="wc-mockup wc-mockup-2">
+          <div class="mock-chat">
+            <div class="mock-msg mock-msg-ai">Generating design system...</div>
+            <div class="mock-msg mock-msg-user">Create a landing page</div>
+            <div class="mock-msg mock-msg-ai">
+              <div class="mock-typing"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <div class="mock-ai-badge">AI ✦</div>
+        </div>
+        <div class="wc-info">
+          <span class="wc-tag">AI / Design</span>
+          <h3>Neural Studio</h3>
+          <p>AI-powered creative platform</p>
+          <span class="wc-arrow">↗</span>
+        </div>
+      </article>
+
+      <!-- Card 3 — Brand Identity -->
+      <article class="work-card">
+        <div class="wc-bg" style="background:linear-gradient(135deg,#0a0a0a,#180830,#100820)"></div>
+        <div class="wc-mockup wc-mockup-3">
+          <div class="mock-brand">
+            <div class="mock-logo-mark"></div>
+            <div class="mock-palette">
+              <span style="background:#c9a84c"></span>
+              <span style="background:#1a0533"></span>
+              <span style="background:#f0f0f5"></span>
+              <span style="background:#8b5cf6"></span>
+            </div>
+            <div class="mock-type-sample">Aa</div>
+          </div>
+        </div>
+        <div class="wc-info">
+          <span class="wc-tag">Brand / Motion</span>
+          <h3>Luminary</h3>
+          <p>Luxury brand identity system</p>
+          <span class="wc-arrow">↗</span>
+        </div>
+      </article>
+
+      <!-- Card 4 — Wide: E-Commerce -->
+      <article class="work-card wc-wide">
+        <div class="wc-bg" style="background:linear-gradient(135deg,#050510,#0e0e20,#12102a)"></div>
+        <div class="wc-mockup wc-mockup-4">
+          <div class="mock-ecom">
+            <div class="mock-product-card">
+              <div class="mock-product-img"></div>
+              <div class="mock-product-info">
+                <div class="mock-line" style="width:70%"></div>
+                <div class="mock-line" style="width:40%"></div>
+                <div class="mock-price">$299</div>
+              </div>
+            </div>
+            <div class="mock-product-card">
+              <div class="mock-product-img" style="background:linear-gradient(135deg,#1a1040,#3b1f6e)"></div>
+              <div class="mock-product-info">
+                <div class="mock-line" style="width:60%"></div>
+                <div class="mock-line" style="width:35%"></div>
+                <div class="mock-price">$449</div>
+              </div>
+            </div>
+            <div class="mock-product-card mock-product-card--hide">
+              <div class="mock-product-img" style="background:linear-gradient(135deg,#0f2040,#1a3a6e)"></div>
+              <div class="mock-product-info">
+                <div class="mock-line" style="width:55%"></div>
+                <div class="mock-line" style="width:45%"></div>
+                <div class="mock-price">$199</div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-stat-pill mock-stat-pill--green">↑ AR Try-On</div>
+        </div>
+        <div class="wc-info">
+          <span class="wc-tag">E-Commerce / 3D</span>
+          <h3>Apex Commerce</h3>
+          <p>Next-gen e-commerce with 3D product visualization and AR try-on</p>
+          <span class="wc-arrow">↗</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══ PROCESS ═══ -->
+  <section id="process">
+    <div class="container">
+      <div class="sec-head">
+        <p class="label">How I Work</p>
+        <h2>A process built for <em>results</em></h2>
+      </div>
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="process-num">01</div>
+          <h3>Discovery</h3>
+          <p>We start with a deep dive into your goals, audience, and vision. No assumptions — just clarity.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-num">02</div>
+          <h3>Strategy & Design</h3>
+          <p>Wireframes, moodboards, and a design system tailored to your brand. Every decision is intentional.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-num">03</div>
+          <h3>Build & Animate</h3>
+          <p>Clean code, 3D scenes, and motion that brings the design to life — pixel-perfect and performant.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-num">04</div>
+          <h3>Launch & Grow</h3>
+          <p>Thorough testing, smooth deployment, and ongoing support to keep your product ahead of the curve.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TECH STACK ═══ -->
+  <section class="tech-section">
+    <div class="tech-header">
+      <div class="tech-badge"><span>⚡</span> Always learning, always building</div>
+      <h2>Built with modern technology</h2>
+      <p class="tech-sub"><em>Never miss a tool, a trend, or an opportunity.</em></p>
+    </div>
+
+    <div class="tech-orb"></div>
+
+    <div class="tech-grid">
+
+      <!-- Row 1 — 10 icons -->
+      <div class="tech-row">
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript"/><span>JavaScript</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript"/><span>TypeScript</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"/><span>Python</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg" alt="Django" style="filter:invert(1)"/><span>Django</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React"/><span>React</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redux/redux-original.svg" alt="Redux"/><span>Redux</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/reactrouter/reactrouter-original.svg" alt="React Query"/><span>React Query</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="Next.js"/><span>Next.js</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gatsby/gatsby-original.svg" alt="Gatsby"/><span>Gatsby</span></div>
+        <div class="ti"><img src="https://img.icons8.com/color/96/stripe.png" alt="Stripe"/><span>Stripe</span></div>
+      </div>
+
+      <!-- Row 2 — 9 icons -->
+      <div class="tech-row">
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/materialui/materialui-original.svg" alt="Material UI"/><span>Material UI</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/storybook/storybook-original.svg" alt="Storybook"/><span>Storybook</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sass/sass-original.svg" alt="Sass"/><span>Sass</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS"/><span>Tailwind CSS</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/framermotion/framermotion-original.svg" alt="Framer Motion"/><span>Framer Motion</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub" style="filter:invert(1)"/><span>GitHub</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma"/><span>Figma</span></div>
+        <div class="ti"><img src="https://img.icons8.com/color/96/prettier.png" alt="Prettier"/><span>Prettier</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/eslint/eslint-original.svg" alt="ESLint"/><span>ESLint</span></div>
+      </div>
+
+      <!-- Row 3 — 7 icons -->
+      <div class="tech-row">
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase"/><span>Firebase</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB"/><span>MongoDB</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"/><span>PostgreSQL</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL"/><span>MySQL</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:invert(1)"/><span>Prisma</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/graphql/graphql-plain.svg" alt="GraphQL"/><span>GraphQL</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="REST API"/><span>REST API</span></div>
+      </div>
+
+      <!-- Row 4 — 4 icons -->
+      <div class="tech-row">
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS"/><span>AWS</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg" alt="Nginx"/><span>Nginx</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="Node.js"/><span>Node.js</span></div>
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" alt="Express.js" style="filter:invert(1)"/><span>Express.js</span></div>
+      </div>
+
+      <!-- Row 5 — 1 icon -->
+      <div class="tech-row">
+        <div class="ti"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker"/><span>Docker</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="sec-head">
+        <p class="label">Kind Words</p>
+        <h2>What clients <em>say</em></h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Abhinav completely transformed our digital presence. The 3D experience he built is unlike anything we've seen. Conversion rate jumped 340%."</p>
+          <div class="testi-author"><div class="testi-av">JM</div><div><strong>James Mitchell</strong><span>CEO, Quantum Labs</span></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Working with Abhinav felt like working with the future. His attention to detail is unmatched. Every animation, every transition — perfection."</p>
+          <div class="testi-author"><div class="testi-av">SR</div><div><strong>Sofia Reyes</strong><span>Creative Director, Luminary</span></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Abhinav doesn't just deliver — he exceeds every expectation. Our platform has won two industry awards since launch."</p>
+          <div class="testi-author"><div class="testi-av">AK</div><div><strong>Alex Kim</strong><span>Founder, NeuralPath AI</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <p class="label">Get In Touch</p>
+        <h2>Let's build something <em>extraordinary</em></h2>
+        <p class="body-text">Have a project in mind? I'd love to hear about it. Let's create something that sets you apart.</p>
+        <div class="contact-links">
+          <a href="mailto:hello@abhinav.studio" class="c-link"><span class="c-link-icon">@</span>hello@abhinav.studio</a>
+          <a href="#" class="c-link"><span class="c-link-icon">in</span>LinkedIn</a>
+          <a href="#" class="c-link"><span class="c-link-icon">tw</span>Twitter / X</a>
+          <a href="#" class="c-link"><span class="c-link-icon">gh</span>GitHub</a>
+        </div>
+      </div>
+      <form id="contact-form" class="contact-right">
+        <div class="field-row">
+          <div class="field"><input type="text" placeholder="Name" required /><div class="field-line"></div></div>
+          <div class="field"><input type="email" placeholder="Email" required /><div class="field-line"></div></div>
+        </div>
+        <div class="field">
+          <select><option value="">Service needed</option><option>3D Web Experience</option><option>UI/UX Design</option><option>Motion & Animation</option><option>Full-Stack Dev</option><option>Brand Identity</option><option>AI Integration</option></select>
+          <div class="field-line"></div>
+        </div>
+        <div class="field"><textarea placeholder="Tell me about your project..." rows="5" required></textarea><div class="field-line"></div></div>
+        <button type="submit" class="btn-main magnetic"><span>Send Message</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10h12M10 4l6 6-6 6"/></svg></button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══ CTA BAND ═══ -->
+  <div class="cta-band">
+    <div class="cta-band-inner">
+      <div class="cta-band-glow"></div>
+      <p class="label">Ready to start?</p>
+      <h2>Your next project deserves to be <em>extraordinary</em></h2>
+      <p>Let's turn your vision into a world-class digital experience. I'm currently available for new projects.</p>
+      <a href="#contact" class="btn-main magnetic">Start a Project</a>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">ABHINAV</span>
+      <span class="footer-copy">© 2026 — Crafted with precision</span>
+      <span class="footer-back"><a href="#hero">Back to top ↑</a></span>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
