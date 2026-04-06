@@ -103,7 +103,7 @@ function initStarField() {
 function initShootingStars() {
   const canvas = document.createElement('canvas');
   canvas.id = 'shooting-canvas';
-  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none';
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none';
   document.body.insertBefore(canvas, document.body.firstChild);
 
   const ctx = canvas.getContext('2d');
@@ -121,69 +121,118 @@ function initShootingStars() {
     constructor() { this.reset(true); }
 
     reset(initial = false) {
-      // Start from top-right area, fall toward bottom-left
-      this.x     = W * (0.3 + Math.random() * 0.8);
-      this.y     = initial ? Math.random() * H * 0.5 : -20;
-      this.len   = 120 + Math.random() * 180;   // tail length
-      this.speed = 1.8 + Math.random() * 2.8;   // fall speed
-      this.angle = (Math.PI / 4) + (Math.random() - 0.5) * 0.3; // ~45° diagonal
-      this.alpha = 0;
-      this.maxAlpha = 0.5 + Math.random() * 0.45;
-      this.width = 1 + Math.random() * 1.2;
-      // rose/gold/white color
+      this.x     = W * (0.3 + Math.random() * 0.7);
+      this.y     = initial ? Math.random() * H * 0.4 : -10;
+      this.speed = 2.2 + Math.random() * 2.5;
+      this.angle = (Math.PI / 4) + (Math.random() - 0.5) * 0.35;
+      // Curve: slight sine wave wobble
+      this.wobble      = (Math.random() - 0.5) * 0.018;
+      this.wobblePhase = Math.random() * Math.PI * 2;
+      this.alpha    = 0;
+      this.maxAlpha = 0.55 + Math.random() * 0.4;
+      this.width    = 1.2 + Math.random() * 1.2;
+      this.state    = 'fadein';
+      this.life     = 0;
+      this.maxLife  = 70 + Math.random() * 90;
+      // Trail: array of {x,y,a} points
+      this.trail    = [];
+      this.trailLen = 28 + Math.floor(Math.random() * 20);
+      // Sparkles along trail
+      this.sparkles = [];
       const palette = [
-        [232, 164, 184],  // rose
-        [212, 169, 106],  // gold
-        [255, 255, 255],  // white
-        [245, 221, 232],  // blush
+        [232,164,184],[212,169,106],[255,255,255],[245,221,232]
       ];
       this.color = palette[Math.floor(Math.random() * palette.length)];
-      this.state = 'fadein'; // fadein → travel → fadeout
-      this.life  = 0;
-      this.maxLife = 60 + Math.random() * 80;
     }
 
     update() {
-      this.x += Math.cos(this.angle) * this.speed;
-      this.y += Math.sin(this.angle) * this.speed;
+      // Wobble the angle slightly for curved path
+      this.wobblePhase += 0.08;
+      const curAngle = this.angle + Math.sin(this.wobblePhase) * this.wobble * 8;
+
+      this.x += Math.cos(curAngle) * this.speed;
+      this.y += Math.sin(curAngle) * this.speed;
       this.life++;
 
+      // Store trail point
+      this.trail.unshift({ x: this.x, y: this.y, a: this.alpha });
+      if (this.trail.length > this.trailLen) this.trail.pop();
+
+      // Randomly spawn sparkles along trail
+      if (Math.random() < 0.35 && this.alpha > 0.1) {
+        this.sparkles.push({
+          x: this.x + (Math.random() - 0.5) * 6,
+          y: this.y + (Math.random() - 0.5) * 6,
+          r: 0.5 + Math.random() * 1.5,
+          a: this.alpha * (0.4 + Math.random() * 0.5),
+          decay: 0.03 + Math.random() * 0.05,
+          twinkle: Math.random() * Math.PI * 2,
+        });
+      }
+      // Update sparkles
+      this.sparkles = this.sparkles.filter(s => {
+        s.twinkle += 0.25;
+        s.a -= s.decay;
+        return s.a > 0;
+      });
+
       if (this.state === 'fadein') {
-        this.alpha += 0.04;
+        this.alpha += 0.035;
         if (this.alpha >= this.maxAlpha) { this.alpha = this.maxAlpha; this.state = 'travel'; }
       } else if (this.state === 'travel') {
         if (this.life > this.maxLife) this.state = 'fadeout';
       } else {
-        this.alpha -= 0.03;
+        this.alpha -= 0.025;
         if (this.alpha <= 0) this.reset();
       }
     }
 
     draw() {
       const [r, g, b] = this.color;
-      const tailX = this.x - Math.cos(this.angle) * this.len;
-      const tailY = this.y - Math.sin(this.angle) * this.len;
 
-      const grad = ctx.createLinearGradient(tailX, tailY, this.x, this.y);
-      grad.addColorStop(0, `rgba(${r},${g},${b},0)`);
-      grad.addColorStop(0.7, `rgba(${r},${g},${b},${this.alpha * 0.4})`);
-      grad.addColorStop(1, `rgba(${r},${g},${b},${this.alpha})`);
+      // Draw curved trail using stored points
+      if (this.trail.length > 2) {
+        for (let i = 1; i < this.trail.length; i++) {
+          const t  = 1 - i / this.trail.length;
+          const ta = this.alpha * t * t; // quadratic fade
+          if (ta < 0.005) continue;
+          ctx.beginPath();
+          ctx.moveTo(this.trail[i-1].x, this.trail[i-1].y);
+          ctx.lineTo(this.trail[i].x,   this.trail[i].y);
+          ctx.strokeStyle = `rgba(${r},${g},${b},${ta})`;
+          ctx.lineWidth   = this.width * t;
+          ctx.lineCap     = 'round';
+          ctx.stroke();
+        }
+      }
 
+      // Draw sparkles — 4-point star shape
+      this.sparkles.forEach(s => {
+        const pulse = s.a * (0.7 + 0.3 * Math.sin(s.twinkle));
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.twinkle * 0.5);
+        ctx.fillStyle = `rgba(${r},${g},${b},${pulse})`;
+        // 4-point star
+        ctx.beginPath();
+        for (let p = 0; p < 4; p++) {
+          const a1 = (p / 4) * Math.PI * 2;
+          const a2 = a1 + Math.PI / 4;
+          ctx.lineTo(Math.cos(a1) * s.r * 2.5, Math.sin(a1) * s.r * 2.5);
+          ctx.lineTo(Math.cos(a2) * s.r * 0.6, Math.sin(a2) * s.r * 0.6);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Bright glowing head
+      const grd = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 5);
+      grd.addColorStop(0, `rgba(${r},${g},${b},${this.alpha})`);
+      grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
       ctx.beginPath();
-      ctx.moveTo(tailX, tailY);
-      ctx.lineTo(this.x, this.y);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = this.width;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-
-      // Bright head glow
-      const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 4);
-      glow.addColorStop(0, `rgba(${r},${g},${b},${this.alpha})`);
-      glow.addColorStop(1, `rgba(${r},${g},${b},0)`);
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = glow;
+      ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
       ctx.fill();
     }
   }
