@@ -14,9 +14,9 @@
   --gold:     #d4a96a;
   --gold-dim: rgba(212,169,106,.1);
   --blush:    #f5dde8;
-  --white:    #faf8fc;
-  --muted:    #7a6e90;
-  --soft:     #c0b0d8;
+  --white:    #ffffff;
+  --muted:    #b0a8c8;
+  --soft:     #ddd4f0;
   --border:   rgba(232,164,184,.08);
   --border-r: rgba(232,164,184,.22);
   --glass:    rgba(232,164,184,.04);
@@ -129,18 +129,20 @@ body::after{content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;
 /* ── Hero ── */
 #hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-#hero::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(10,8,18,.75) 100%)}
+#hero::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 75% 75% at 50% 50%,rgba(10,8,18,.3) 0%,rgba(10,8,18,.85) 100%)}
 .hero-inner{position:relative;z-index:2;text-align:center;max-width:960px;padding:0 2rem}
 
-.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-bottom:2.5rem;font-family:'Outfit',sans-serif;font-weight:400}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#ffffff;margin-bottom:2.5rem;font-family:'Outfit',sans-serif;font-weight:500;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 .dot-live{width:6px;height:6px;border-radius:50%;background:#f9a8d4;box-shadow:0 0 10px #f9a8d4;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 .hero-heading{
   font-family:'Playfair Display',serif;
   font-size:clamp(2.8rem,6vw,6rem);
-  font-weight:500;line-height:1.12;
+  font-weight:600;line-height:1.12;
   letter-spacing:-.01em;margin-bottom:2rem;
+  color:#ffffff;
+  text-shadow:0 2px 30px rgba(0,0,0,.6);
 }
 .hero-heading .word{display:block}
 .hero-heading .accent{
@@ -149,7 +151,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   filter:drop-shadow(0 0 40px rgba(232,164,184,.25));
 }
-.hero-sub{font-size:clamp(.9rem,1.6vw,1.08rem);color:var(--soft);max-width:520px;margin:0 auto 3rem;line-height:1.9;font-weight:300;font-family:'Outfit',sans-serif}
+.hero-sub{font-size:clamp(.95rem,1.6vw,1.1rem);color:#ffffff;max-width:520px;margin:0 auto 3rem;line-height:1.9;font-weight:400;font-family:'Outfit',sans-serif;text-shadow:0 1px 20px rgba(0,0,0,.9)}
 .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 
 /* Float tags */
