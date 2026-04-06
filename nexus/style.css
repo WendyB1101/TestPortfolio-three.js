@@ -449,6 +449,10 @@ h1 em,h2 em,h3 em{
   font-size:.92rem;letter-spacing:.08em;
   margin-top:auto;
 }
+.btn-send{
+  align-self:flex-end;
+  width:auto !important;
+}
 
 /* ── CTA Band ── */
 .cta-band{padding:8rem 0;overflow:hidden}
