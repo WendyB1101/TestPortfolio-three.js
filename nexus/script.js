@@ -282,10 +282,13 @@ function initTechGhost() {
     ti.addEventListener('mouseenter', () => {
       ghostImg.src = img.src;
       ghostImg.alt = img.alt;
-      ghost.style.opacity = '1';
+      // small delay so scale starts from 0.6 before becoming visible
+      requestAnimationFrame(() => {
+        ghost.classList.add('visible');
+      });
     });
     ti.addEventListener('mouseleave', () => {
-      ghost.style.opacity = '0';
+      ghost.classList.remove('visible');
     });
   });
 }
