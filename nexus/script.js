@@ -363,15 +363,16 @@ function initHero3D() {
   renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
 
   const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, canvas.offsetWidth / canvas.offsetHeight, 0.1, 500);
-  camera.position.set(0, 2.5, 7);
+  const camera = new THREE.PerspectiveCamera(65, canvas.offsetWidth / canvas.offsetHeight, 0.1, 500);
+  // Lower camera, wider FOV = galaxy spreads across full screen
+  camera.position.set(0, 1.8, 5.5);
   camera.lookAt(0, 0, 0);
 
-  // ── Galaxy parameters ──
+  // ── Galaxy parameters — wider spread ──
   const ARMS        = 3;
-  const ARM_STARS   = 6000;
-  const CORE_STARS  = 1200;
-  const DUST_STARS  = 2000;
+  const ARM_STARS   = 7000;
+  const CORE_STARS  = 1400;
+  const DUST_STARS  = 2500;
 
   const positions = [];
   const colors    = [];
@@ -400,11 +401,11 @@ function initHero3D() {
   for (let arm = 0; arm < ARMS; arm++) {
     const armOffset = (arm / ARMS) * Math.PI * 2;
     for (let i = 0; i < ARM_STARS; i++) {
-      const t        = i / ARM_STARS;                        // 0 → 1 along arm
-      const radius   = 0.3 + t * 4.5;                       // distance from center
-      const angle    = armOffset + t * Math.PI * 3.5;       // spiral angle
-      const spread   = 0.08 + t * 0.35;                     // arm width grows outward
-      const height   = (Math.random() - 0.5) * 0.12 * (1 + t); // thin disk
+      const t        = i / ARM_STARS;
+      const radius   = 0.3 + t * 7.5;   // much wider — was 4.5
+      const angle    = armOffset + t * Math.PI * 4.0;  // more spiral turns
+      const spread   = 0.1 + t * 0.55;  // wider arms
+      const height   = (Math.random() - 0.5) * 0.08 * (1 + t);
 
       const ox = (Math.random() - 0.5) * spread * 2;
       const oz = (Math.random() - 0.5) * spread * 2;
@@ -436,11 +437,11 @@ function initHero3D() {
     colors.push(cr * bright, cg * bright, cb * bright);
   }
 
-  // ── Dust / haze layer ──
+  // ── Dust / haze layer — wider ──
   for (let i = 0; i < DUST_STARS; i++) {
-    const r     = 0.5 + Math.random() * 5;
+    const r     = 0.5 + Math.random() * 8;  // was 5
     const theta = Math.random() * Math.PI * 2;
-    const y     = (Math.random() - 0.5) * 0.6;
+    const y     = (Math.random() - 0.5) * 0.5;
     positions.push(Math.cos(theta) * r, y, Math.sin(theta) * r);
     const [dr, dg, db] = starColor(0, 2);
     colors.push(dr, dg, db);
@@ -632,31 +633,39 @@ function initCounters() {
   document.querySelectorAll('.astat-n').forEach(el => io.observe(el));
 }
 
-// ── Text scramble ─────────────────────────────────────────────────────────────
+// ── Text scramble — slow, readable ───────────────────────────────────────────
 function initScramble() {
   const el = document.getElementById('scramble-word');
   if (!el) return;
   const words = ['beautiful', 'elegant', 'immersive', 'luminous', 'refined'];
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let wi = 0;
+  let busy = false;
 
   function scrambleTo(target) {
+    if (busy) return;
+    busy = true;
     let iter = 0;
-    const interval = setInterval(() => {
+    const total = target.length;
+    const iv = setInterval(() => {
       el.textContent = target.split('').map((c, i) => {
-        if (i < iter) return target[i];
+        if (i < Math.floor(iter)) return target[i];
         return chars[Math.floor(Math.random() * chars.length)];
       }).join('');
-      if (iter >= target.length) clearInterval(interval);
-      iter += 0.4; // slower reveal
-    }, 55); // slower interval
+      iter += 0.25; // very slow reveal
+      if (iter >= total + 1) {
+        el.textContent = target;
+        clearInterval(iv);
+        busy = false;
+      }
+    }, 80); // slow tick
   }
 
-  // Show each word for 3.5 seconds before scrambling to next
+  // Show each word for 4 seconds, then scramble
   setInterval(() => {
     wi = (wi + 1) % words.length;
     scrambleTo(words[wi]);
-  }, 3500);
+  }, 4000);
 }
 
 // ── Hero parallax ─────────────────────────────────────────────────────────────
