@@ -260,79 +260,13 @@ function initShootingStars() {
 // Start shooting stars immediately
 initShootingStars();
 
-// ── Label star clusters — single shared RAF loop ──────────────────────────────
+// ── Label star clusters — CSS only, no canvas ────────────────────────────────
 function initLabelStars() {
-  const allClusters = [];
-
+  // No canvas needed — handled entirely by CSS animations
+  // Just ensure label-wrap has position:relative
   document.querySelectorAll('.label-wrap').forEach(wrap => {
-    const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;';
     wrap.style.position = 'relative';
-    wrap.insertBefore(canvas, wrap.firstChild);
-
-    const ctx = canvas.getContext('2d');
-    const W = 600, H = 140;
-    canvas.width = W; canvas.height = H;
-
-    const palette = [
-      [232,164,184],[212,169,106],[255,240,250],[245,221,232],[200,150,255]
-    ];
-
-    const stars = Array.from({length: 35}, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: 0.4 + Math.random() * 1.6,
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.012 + Math.random() * 0.025,
-      color: palette[Math.floor(Math.random() * palette.length)],
-      type: Math.random() < 0.5 ? 'star4' : 'dot',
-      rot: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.03,
-    }));
-
-    allClusters.push({ ctx, W, H, stars });
   });
-
-  if (!allClusters.length) return;
-
-  let t = 0;
-  function drawAll() {
-    if (!tabVisible) { requestAnimationFrame(drawAll); return; }
-    t += 0.016;
-
-    allClusters.forEach(({ ctx, W, H, stars }) => {
-      ctx.clearRect(0, 0, W, H);
-      stars.forEach(s => {
-        s.rot += s.rotSpeed;
-        const a = 0.1 + 0.4 * Math.abs(Math.sin(t * s.speed * 60 + s.phase));
-        const [r,g,b] = s.color;
-
-        if (s.type === 'star4') {
-          ctx.save();
-          ctx.translate(s.x, s.y);
-          ctx.rotate(s.rot);
-          ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
-          ctx.beginPath();
-          for (let i = 0; i < 8; i++) {
-            const ang = (i / 8) * Math.PI * 2;
-            const rad = i % 2 === 0 ? s.r * 2.8 : s.r * 0.8;
-            i === 0 ? ctx.moveTo(Math.cos(ang)*rad, Math.sin(ang)*rad)
-                    : ctx.lineTo(Math.cos(ang)*rad, Math.sin(ang)*rad);
-          }
-          ctx.closePath(); ctx.fill();
-          ctx.restore();
-        } else {
-          const grd = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*2.5);
-          grd.addColorStop(0, `rgba(${r},${g},${b},${a})`);
-          grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
-          ctx.beginPath(); ctx.arc(s.x,s.y,s.r*2.5,0,Math.PI*2);
-          ctx.fillStyle = grd; ctx.fill();
-        }
-      });
-    });
-
-    requestAnimationFrame(drawAll);
-  }
-  drawAll();
 }
 
 function startSite() {
@@ -698,7 +632,7 @@ function initCounters() {
   document.querySelectorAll('.astat-n').forEach(el => io.observe(el));
 }
 
-// ── Text scramble on hero accent word ────────────────────────────────────────
+// ── Text scramble ─────────────────────────────────────────────────────────────
 function initScramble() {
   const el = document.getElementById('scramble-word');
   if (!el) return;
@@ -714,14 +648,15 @@ function initScramble() {
         return chars[Math.floor(Math.random() * chars.length)];
       }).join('');
       if (iter >= target.length) clearInterval(interval);
-      iter += 0.5;
-    }, 40);
+      iter += 0.4; // slower reveal
+    }, 55); // slower interval
   }
 
+  // Show each word for 3.5 seconds before scrambling to next
   setInterval(() => {
     wi = (wi + 1) % words.length;
     scrambleTo(words[wi]);
-  }, 2800);
+  }, 3500);
 }
 
 // ── Hero parallax ─────────────────────────────────────────────────────────────
