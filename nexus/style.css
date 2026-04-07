@@ -203,28 +203,42 @@ body::after{content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;
 .cta-band-inner{max-width:860px;margin:0 auto;padding:0 2.5rem;text-align:center;position:relative}
 .tech-section .tech-header,.tech-section .tech-grid{padding-left:2.5rem;padding-right:2.5rem}
 
-/* ── Label — Bebas Neue, bold & commanding ── */
+/* ── Label — large, glowing, commanding ── */
 .label{
-  display:inline-block;
+  display:block;
   font-family:'Bebas Neue',sans-serif;
-  font-size:1rem;letter-spacing:.25em;
-  color:var(--rose);margin-bottom:1.2rem;
+  font-size:clamp(1rem,2vw,1.4rem);
+  letter-spacing:.35em;
+  color:var(--rose);
+  margin-bottom:1rem;
   font-weight:400;
-  padding:.3rem .9rem;
-  border:1px solid rgba(232,164,184,.3);
-  border-radius:50px;
-  background:rgba(232,164,184,.06);
+  text-transform:uppercase;
+  background:none;
+  border:none;
+  padding:0;
+  border-radius:0;
+  text-shadow:0 0 20px rgba(232,164,184,.4);
 }
-.sec-head{margin-bottom:5rem}
+.sec-head{margin-bottom:4rem}
+.sec-head .label{
+  font-size:clamp(1.2rem,2.5vw,1.8rem);
+  letter-spacing:.4em;
+  margin-bottom:1.2rem;
+}
 .sec-head h2{
   font-family:'Playfair Display',serif;
   font-size:clamp(2.4rem,4vw,3.6rem);
   font-weight:700;letter-spacing:-.02em;
-  line-height:1.12;margin-top:1rem;
+  line-height:1.12;margin-top:.5rem;
   color:#ffffff;
 }
 
-/* Italic em — Cormorant for elegance */
+.about-right .label,
+.contact-left .label{
+  font-size:clamp(1.1rem,2vw,1.5rem);
+  letter-spacing:.38em;
+  margin-bottom:1.2rem;
+}
 h1 em,h2 em,h3 em{
   font-family:'Cormorant Garamond',serif;
   font-style:italic;font-weight:400;
