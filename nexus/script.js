@@ -633,51 +633,8 @@ function initCounters() {
   document.querySelectorAll('.astat-n').forEach(el => io.observe(el));
 }
 
-// ── Text scramble — single chain, no overlap ─────────────────────────────────
-function initScramble() {
-  const el = document.getElementById('scramble-word');
-  if (!el) return;
-
-  const words = ['beautiful', 'elegant', 'immersive', 'luminous', 'refined'];
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  let wi = 0;
-  let scrambleTimer = null;
-  let cycleTimer = null;
-
-  function scrambleTo(target, onDone) {
-    // Clear any existing scramble
-    if (scrambleTimer) clearInterval(scrambleTimer);
-    let step = 0;
-    const totalSteps = target.length * 4; // 4 ticks per character
-
-    scrambleTimer = setInterval(() => {
-      const revealed = Math.floor(step / 4);
-      el.textContent = target.split('').map((c, i) => {
-        if (i < revealed) return target[i];
-        return chars[Math.floor(Math.random() * chars.length)];
-      }).join('');
-      step++;
-      if (step >= totalSteps) {
-        clearInterval(scrambleTimer);
-        scrambleTimer = null;
-        el.textContent = target;
-        if (onDone) onDone();
-      }
-    }, 90); // 90ms per tick — slow and readable
-  }
-
-  function cycle() {
-    if (cycleTimer) clearTimeout(cycleTimer);
-    wi = (wi + 1) % words.length;
-    scrambleTo(words[wi], () => {
-      // Wait 4 seconds showing the word, then cycle again
-      cycleTimer = setTimeout(cycle, 4000);
-    });
-  }
-
-  // Start first cycle after 4 seconds
-  cycleTimer = setTimeout(cycle, 4000);
-}
+// ── Scramble removed — fixed text ────────────────────────────────────────────
+function initScramble() { /* disabled */ }
 
 // ── Hero parallax ─────────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
