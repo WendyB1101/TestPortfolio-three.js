@@ -269,6 +269,27 @@ function initLabelStars() {
   });
 }
 
+// ── Tech icon ghost background ────────────────────────────────────────────────
+function initTechGhost() {
+  const ghost    = document.getElementById('tech-ghost');
+  const ghostImg = ghost ? ghost.querySelector('img') : null;
+  if (!ghost || !ghostImg) return;
+
+  document.querySelectorAll('.ti').forEach(ti => {
+    const img = ti.querySelector('img');
+    if (!img) return;
+
+    ti.addEventListener('mouseenter', () => {
+      ghostImg.src = img.src;
+      ghostImg.alt = img.alt;
+      ghost.style.opacity = '1';
+    });
+    ti.addEventListener('mouseleave', () => {
+      ghost.style.opacity = '0';
+    });
+  });
+}
+
 function startSite() {
   loaderEl.classList.add('out');
   initHero3D();
@@ -279,6 +300,7 @@ function startSite() {
   initCounters();
   initScramble();
   initLabelStars();
+  initTechGhost();
 }
 
 // Start star field immediately — visible during loader too
