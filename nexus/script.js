@@ -269,46 +269,142 @@ function initLabelStars() {
     wrap.insertBefore(canvas, wrap.firstChild);
 
     const ctx = canvas.getContext('2d');
-    const W = 400, H = 80;
+    const W = 700, H = 160;
     canvas.width = W; canvas.height = H;
 
-    // Create star particles
-    const stars = Array.from({length: 28}, () => ({
+    const palette = [
+      [232,164,184], // rose
+      [212,169,106], // gold
+      [255,240,250], // white-pink
+      [245,221,232], // blush
+      [255,210,160], // warm gold
+      [200,150,255], // soft violet
+    ];
+
+    // ── Static twinkling stars ──
+    const stars = Array.from({length: 65}, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      r: 0.4 + Math.random() * 1.2,
+      r: 0.3 + Math.random() * 1.8,
       phase: Math.random() * Math.PI * 2,
-      speed: 0.015 + Math.random() * 0.025,
-      color: Math.random() < 0.6
-        ? [232,164,184]   // rose
-        : [212,169,106],  // gold
+      speed: 0.012 + Math.random() * 0.03,
+      color: palette[Math.floor(Math.random() * palette.length)],
+      type: Math.random() < 0.5 ? 'star4' : 'dot',
+      rotSpeed: (Math.random() - 0.5) * 0.04,
+      rot: Math.random() * Math.PI * 2,
     }));
+
+    // ── Drifting dust particles ──
+    const dust = Array.from({length: 30}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 0.2 + Math.random() * 0.6,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.008 + Math.random() * 0.015,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.08,
+      color: palette[Math.floor(Math.random() * palette.length)],
+    }));
+
+    // ── Mini shooting streaks ──
+    const streaks = Array.from({length: 3}, () => resetStreak({}));
+    function resetStreak(s) {
+      s.x = Math.random() * W * 0.8 + W * 0.1;
+      s.y = Math.random() * H * 0.4;
+      s.len = 20 + Math.random() * 40;
+      s.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.4;
+      s.speed = 1.5 + Math.random() * 2;
+      s.alpha = 0;
+      s.life = 0;
+      s.maxLife = 40 + Math.random() * 50;
+      s.delay = Math.random() * 200;
+      s.color = palette[Math.floor(Math.random() * palette.length)];
+      return s;
+    }
+
+    function drawStar4(x, y, r, a, color, rot) {
+      const [cr,cg,cb] = color;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.fillStyle = `rgba(${cr},${cg},${cb},${a})`;
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) {
+        const ang = (i / 8) * Math.PI * 2;
+        const rad = i % 2 === 0 ? r * 3 : r * 0.9;
+        i === 0 ? ctx.moveTo(Math.cos(ang)*rad, Math.sin(ang)*rad)
+                : ctx.lineTo(Math.cos(ang)*rad, Math.sin(ang)*rad);
+      }
+      ctx.closePath();
+      ctx.fill();
+      // inner glow
+      const g = ctx.createRadialGradient(0,0,0,0,0,r*2.5);
+      g.addColorStop(0, `rgba(${cr},${cg},${cb},${a*0.6})`);
+      g.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(0,0,r*2.5,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
 
     let t = 0;
     function draw() {
       if (!tabVisible) { requestAnimationFrame(draw); return; }
       t += 0.016;
       ctx.clearRect(0, 0, W, H);
-      stars.forEach(s => {
-        const a = 0.15 + 0.25 * Math.sin(t * s.speed * 60 + s.phase);
-        const [r,g,b] = s.color;
-        // 4-point star shape
-        ctx.save();
-        ctx.translate(s.x, s.y);
-        ctx.rotate(t * s.speed * 20 + s.phase);
-        ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
-        ctx.beginPath();
-        for (let i = 0; i < 8; i++) {
-          const ang = (i / 8) * Math.PI * 2;
-          const rad = i % 2 === 0 ? s.r * 2.5 : s.r * 0.8;
-          i === 0
-            ? ctx.moveTo(Math.cos(ang)*rad, Math.sin(ang)*rad)
-            : ctx.lineTo(Math.cos(ang)*rad, Math.sin(ang)*rad);
-        }
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
+
+      // Draw dust
+      dust.forEach(d => {
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0) d.x = W; if (d.x > W) d.x = 0;
+        if (d.y < 0) d.y = H; if (d.y > H) d.y = 0;
+        const a = 0.08 + 0.12 * Math.sin(t * d.speed * 60 + d.phase);
+        const [r,g,b] = d.color;
+        const grd = ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r*3);
+        grd.addColorStop(0, `rgba(${r},${g},${b},${a})`);
+        grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.beginPath(); ctx.arc(d.x,d.y,d.r*3,0,Math.PI*2);
+        ctx.fillStyle = grd; ctx.fill();
       });
+
+      // Draw twinkling stars
+      stars.forEach(s => {
+        s.rot += s.rotSpeed;
+        const a = 0.12 + 0.45 * Math.abs(Math.sin(t * s.speed * 60 + s.phase));
+        if (s.type === 'star4') {
+          drawStar4(s.x, s.y, s.r, a, s.color, s.rot);
+        } else {
+          const [r,g,b] = s.color;
+          const grd = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*2);
+          grd.addColorStop(0, `rgba(${r},${g},${b},${a})`);
+          grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          ctx.beginPath(); ctx.arc(s.x,s.y,s.r*2,0,Math.PI*2);
+          ctx.fillStyle = grd; ctx.fill();
+        }
+      });
+
+      // Draw mini streaks
+      streaks.forEach(s => {
+        if (s.delay > 0) { s.delay--; return; }
+        s.life++;
+        s.x += Math.cos(s.angle) * s.speed;
+        s.y += Math.sin(s.angle) * s.speed;
+        if (s.life < 10) s.alpha = s.life / 10;
+        else if (s.life > s.maxLife - 10) s.alpha = (s.maxLife - s.life) / 10;
+        if (s.life >= s.maxLife) resetStreak(s);
+        if (s.alpha <= 0) return;
+        const tx = s.x - Math.cos(s.angle) * s.len;
+        const ty = s.y - Math.sin(s.angle) * s.len;
+        const [r,g,b] = s.color;
+        const grad = ctx.createLinearGradient(tx,ty,s.x,s.y);
+        grad.addColorStop(0, `rgba(${r},${g},${b},0)`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},${s.alpha * 0.7})`);
+        ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(s.x,s.y);
+        ctx.strokeStyle = grad; ctx.lineWidth = 0.8; ctx.stroke();
+        // head dot
+        ctx.beginPath(); ctx.arc(s.x,s.y,1.2,0,Math.PI*2);
+        ctx.fillStyle = `rgba(${r},${g},${b},${s.alpha})`; ctx.fill();
+      });
+
       requestAnimationFrame(draw);
     }
     draw();

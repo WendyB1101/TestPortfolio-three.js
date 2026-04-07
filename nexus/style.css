@@ -224,59 +224,63 @@ body::after{content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;
 
 /* Star cluster behind label */
 .label::before{
-  content:'✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦';
+  content:'✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦';
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
-  width:120%;
+  width:150%;
   text-align:center;
-  font-size:.55rem;
-  letter-spacing:.6em;
-  color:rgba(232,164,184,.18);
+  font-size:.6rem;
+  letter-spacing:.55em;
+  color:rgba(232,164,184,.22);
   pointer-events:none;
   z-index:-1;
   white-space:nowrap;
   animation:starClusterPulse 3s ease-in-out infinite;
 }
 .label::after{
-  content:'· ✦ · ✧ · ✦ · ✧ · ✦ · ✧ ·';
+  content:'· ✦ · ✧ · ✦ · ✧ · ✦ · ✧ · ✦ · ✧ ·';
   position:absolute;
-  bottom:-1rem;left:50%;
+  bottom:-1.2rem;left:50%;
   transform:translateX(-50%);
-  width:140%;
+  width:160%;
   text-align:center;
-  font-size:.45rem;
+  font-size:.5rem;
   letter-spacing:.5em;
-  color:rgba(212,169,106,.15);
+  color:rgba(212,169,106,.18);
   pointer-events:none;
   z-index:-1;
   white-space:nowrap;
-  animation:starClusterPulse 3s ease-in-out infinite .8s;
+  animation:starClusterPulse 3.5s ease-in-out infinite .6s;
 }
 @keyframes starClusterPulse{
-  0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}
+  0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
 }
 
 /* Glowing halo behind label text */
 .label-wrap{
   position:relative;
   display:inline-block;
+  margin-bottom:.5rem;
 }
 .label-wrap::before{
   content:'';
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
-  width:200%;height:300%;
-  background:radial-gradient(ellipse,rgba(232,164,184,.08) 0%,transparent 65%);
+  width:260%;height:400%;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 50%,rgba(232,164,184,.1) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 30% at 30% 60%,rgba(212,169,106,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 30% at 70% 40%,rgba(200,150,255,.06) 0%,transparent 60%);
   pointer-events:none;
   z-index:0;
   animation:haloBreath 4s ease-in-out infinite;
 }
 @keyframes haloBreath{
-  0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}
+  0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}
 }
 .sec-head{margin-bottom:4rem}
 .sec-head .label{
