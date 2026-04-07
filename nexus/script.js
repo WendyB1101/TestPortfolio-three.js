@@ -260,6 +260,61 @@ function initShootingStars() {
 // Start shooting stars immediately
 initShootingStars();
 
+// ── Label star clusters ───────────────────────────────────────────────────────
+function initLabelStars() {
+  document.querySelectorAll('.label-wrap').forEach(wrap => {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;';
+    wrap.style.position = 'relative';
+    wrap.insertBefore(canvas, wrap.firstChild);
+
+    const ctx = canvas.getContext('2d');
+    const W = 400, H = 80;
+    canvas.width = W; canvas.height = H;
+
+    // Create star particles
+    const stars = Array.from({length: 28}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 0.4 + Math.random() * 1.2,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.015 + Math.random() * 0.025,
+      color: Math.random() < 0.6
+        ? [232,164,184]   // rose
+        : [212,169,106],  // gold
+    }));
+
+    let t = 0;
+    function draw() {
+      if (!tabVisible) { requestAnimationFrame(draw); return; }
+      t += 0.016;
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        const a = 0.15 + 0.25 * Math.sin(t * s.speed * 60 + s.phase);
+        const [r,g,b] = s.color;
+        // 4-point star shape
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(t * s.speed * 20 + s.phase);
+        ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+        ctx.beginPath();
+        for (let i = 0; i < 8; i++) {
+          const ang = (i / 8) * Math.PI * 2;
+          const rad = i % 2 === 0 ? s.r * 2.5 : s.r * 0.8;
+          i === 0
+            ? ctx.moveTo(Math.cos(ang)*rad, Math.sin(ang)*rad)
+            : ctx.lineTo(Math.cos(ang)*rad, Math.sin(ang)*rad);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  });
+}
+
 function startSite() {
   loaderEl.classList.add('out');
   initHero3D();
@@ -269,6 +324,7 @@ function startSite() {
   initReveal();
   initCounters();
   initScramble();
+  initLabelStars();
 }
 
 // Start star field immediately — visible during loader too
