@@ -799,10 +799,10 @@ document.querySelectorAll('.ti img').forEach(img => {
 });
 document.getElementById('contact-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  const btn  = this.querySelector('button span');
-  const orig = btn.textContent;
-  btn.textContent = 'Sent ✓';
-  this.querySelector('button').style.background = '#10b981';
-  setTimeout(() => { btn.textContent = orig; this.querySelector('button').style.background = ''; this.reset(); }, 3200);
+  const btn  = this.querySelector('.btn-send-inside');
+  const orig = btn.innerHTML;
+  btn.innerHTML = 'Sent ✓';
+  btn.style.background = '#10b981';
+  setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; this.reset(); }, 3200);
 });
 
