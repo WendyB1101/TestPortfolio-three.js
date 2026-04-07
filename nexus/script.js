@@ -275,21 +275,132 @@ function initTechGhost() {
   const ghostImg = ghost ? ghost.querySelector('img') : null;
   if (!ghost || !ghostImg) return;
 
+  // ── Particle burst canvas ──
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  canvas.width  = innerWidth;
+  canvas.height = innerHeight;
+  window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; });
+
+  let particles = [];
+  let rafId = null;
+
+  function spawnBurst(cx, cy, iconSrc) {
+    const COUNT = 12;
+    for (let i = 0; i < COUNT; i++) {
+      const angle = (i / COUNT) * Math.PI * 2;
+      const speed = 1.8 + Math.random() * 2.8;
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: 14 + Math.random() * 14,
+        alpha: 0.9,
+        decay: 0.018 + Math.random() * 0.012,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.12,
+        src: iconSrc,
+        img: null,
+      });
+    }
+    // Preload image once
+    const img = new Image();
+    img.src = iconSrc;
+    particles.forEach(p => { if (!p.img && p.src === iconSrc) p.img = img; });
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles = particles.filter(p => p.alpha > 0.01);
+
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.04; // gentle gravity
+      p.vx *= 0.97;
+      p.vy *= 0.97;
+      p.alpha -= p.decay;
+      p.rotation += p.rotSpeed;
+
+      if (!p.img || !p.img.complete) return;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.drawImage(p.img, -p.size / 2, -p.size / 2, p.size, p.size);
+      ctx.restore();
+    });
+
+    if (particles.length > 0) {
+      rafId = requestAnimationFrame(drawParticles);
+    } else {
+      rafId = null;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
   document.querySelectorAll('.ti').forEach(ti => {
     const img = ti.querySelector('img');
     if (!img) return;
 
     ti.addEventListener('mouseenter', () => {
+      // Ghost effect
       ghostImg.src = img.src;
       ghostImg.alt = img.alt;
-      // small delay so scale starts from 0.6 before becoming visible
-      requestAnimationFrame(() => {
-        ghost.classList.add('visible');
-      });
+      requestAnimationFrame(() => ghost.classList.add('visible'));
+
+      // Particle burst from icon center
+      const rect = ti.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top  + rect.height / 2;
+      spawnBurst(cx, cy, img.src);
+      if (!rafId) rafId = requestAnimationFrame(drawParticles);
     });
+
     ti.addEventListener('mouseleave', () => {
       ghost.classList.remove('visible');
     });
+  });
+}
+
+// ── Work card slideshows ──────────────────────────────────────────────────────
+function initSlideshows() {
+  [1, 2, 3].forEach(n => {
+    const slidesEl = document.getElementById(`slides-${n}`);
+    const dotsEl   = document.getElementById(`dots-${n}`);
+    if (!slidesEl || !dotsEl) return;
+
+    const slides = Array.from(slidesEl.querySelectorAll('.wc-slide'));
+    const dots   = Array.from(dotsEl.querySelectorAll('.wc-dot'));
+    let current  = 0;
+    let timer;
+
+    function goTo(i) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = (i + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function next() { goTo(current + 1); }
+
+    // Auto-advance every 3s
+    function startAuto() { timer = setInterval(next, 3000); }
+    function stopAuto()  { clearInterval(timer); }
+
+    startAuto();
+
+    // Click dots to jump
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => { stopAuto(); goTo(i); startAuto(); });
+    });
+
+    // Pause on hover
+    slidesEl.closest('.work-card').addEventListener('mouseenter', stopAuto);
+    slidesEl.closest('.work-card').addEventListener('mouseleave', startAuto);
   });
 }
 
@@ -304,6 +415,7 @@ function startSite() {
   initScramble();
   initLabelStars();
   initTechGhost();
+  initSlideshows();
 }
 
 // Start star field immediately — visible during loader too
