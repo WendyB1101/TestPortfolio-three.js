@@ -399,8 +399,11 @@ function initSlideshows() {
     });
 
     // Pause on hover
-    slidesEl.closest('.work-card').addEventListener('mouseenter', stopAuto);
-    slidesEl.closest('.work-card').addEventListener('mouseleave', startAuto);
+    const card = slidesEl.closest('.work-item-media');
+    if (card) {
+      card.addEventListener('mouseenter', stopAuto);
+      card.addEventListener('mouseleave', startAuto);
+    }
   });
 }
 
