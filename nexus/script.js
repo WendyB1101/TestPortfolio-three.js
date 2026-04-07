@@ -140,7 +140,7 @@ function initShootingStars() {
       // Sparkles along trail
       this.sparkles = [];
       const palette = [
-        [232,164,184],[212,169,106],[255,255,255],[245,221,232]
+        [96,165,250],[147,197,253],[255,255,255],[219,234,254]
       ];
       this.color = palette[Math.floor(Math.random() * palette.length)];
     }
@@ -665,3 +665,4 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
   this.querySelector('button').style.background = '#10b981';
   setTimeout(() => { btn.textContent = orig; this.querySelector('button').style.background = ''; this.reset(); }, 3200);
 });
+
