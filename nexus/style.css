@@ -695,19 +695,13 @@ footer{padding:3.5rem 0;border-top:1px solid var(--border)}
 
 
 
-/* ── Work card slideshow ── */
-.wc-slides{
-  position:absolute;inset:0;
-  overflow:hidden;
-}
+/* ── Work card slideshow — global ── */
+.wc-slides{position:absolute;inset:0;overflow:hidden}
 .wc-slide{
   position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:cover;
-  object-position:top center;
-  opacity:0;
-  transition:opacity .9s ease;
-  /* Dark overlay blend so screenshots integrate with space theme */
+  object-fit:cover;object-position:top center;
+  opacity:0;transition:opacity .9s ease;
   filter:brightness(.75) saturate(.85);
 }
 .wc-slide.active{opacity:1}
@@ -765,17 +759,40 @@ footer{padding:3.5rem 0;border-top:1px solid var(--border)}
 /* Media side */
 .work-item-media{
   position:relative;
-  border-radius:20px;overflow:hidden;
+  border-radius:20px;
+  overflow:hidden;
   border:1px solid rgba(96,165,250,.15);
   aspect-ratio:16/10;
   box-shadow:0 24px 80px rgba(6,8,30,.7);
   transition:box-shadow .4s var(--ease),border-color .4s;
+  /* Force contain — never let children overflow */
+  isolation:isolate;
 }
 .work-item-media:hover{
   border-color:rgba(96,165,250,.4);
   box-shadow:0 32px 100px rgba(6,8,30,.8),0 0 0 1px rgba(96,165,250,.2);
 }
-.work-item-media .wc-slides{position:absolute;inset:0}
+.work-item-media .wc-slides{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  overflow:hidden;
+}
+.work-item-media .wc-slide{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:top center;
+  opacity:0;
+  transition:opacity .9s ease;
+  filter:brightness(.75) saturate(.85);
+}
+.work-item-media .wc-slide.active{opacity:1}
+.work-item-media .wc-slides::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(6,8,30,.3),rgba(10,20,50,.15));
+  pointer-events:none;z-index:1;
+}
 .work-item-media .wc-dots{
   position:absolute;bottom:1rem;left:1.2rem;
   display:flex;gap:.45rem;z-index:3;
